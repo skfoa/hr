@@ -47,7 +47,15 @@ body {
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: bold;
+    /* 如果LOGO在导航栏，这里可以添加 display: flex; align-items: center; */
 }
+
+/* 如果LOGO在导航栏，可以取消注释并调整这里的样式
+.navbar-logo {
+    height: 40px;
+    margin-right: 10px;
+}
+*/
 
 .navbar-nav {
     list-style: none;
@@ -87,12 +95,12 @@ body {
 }
 
 /* 页面标题 */
-h1, h2 {
+h1, h2 { /* 这是全局的h1, h2样式 */
     color: #333;
     margin-bottom: 20px;
 }
-h1 { font-size: 2.2rem; }
-h2 { font-size: 1.8rem; }
+h1 { font-size: 2.2rem; } /* 全局 h1 */
+h2 { font-size: 1.8rem; } /* 全局 h2 */
 
 
 /* 表格样式 */
@@ -280,8 +288,10 @@ textarea.form-control {
 /* 仪表盘链接样式 */
 .dashboard-links {
     margin-top: 30px;
-    display: flex;
+    display: flex; /* 使链接水平排列 */
+    justify-content: center; /* 水平居中链接 */
     gap: 15px; /* 链接之间的间距 */
+    flex-wrap: wrap; /* 如果链接太多，允许换行 */
 }
 .dashboard-link {
     display: inline-block;
@@ -303,5 +313,53 @@ textarea.form-control {
     color: #fff;
     text-align: center;
     padding: 1rem 0;
-    /* margin-top: auto; /* 将页脚推到底部，如果内容不足以撑满屏幕 */
+    /* margin-top: auto; */ /* 如果内容不足，这个会将页脚推到底部，但由于body是flex布局，通常不需要 */
+}
+
+/* --- 新增：首页 LOGO 和标题居中区域样式 --- */
+.hero-section {
+    text-align: center; /* 内部元素水平居中 */
+    padding: 10px 0;    /* 上下留白，可以根据需要调整 */
+    margin-bottom: 10px; /* 与下方内容的间距 */
+}
+
+.hero-logo {
+    display: block; /* 让图片独占一行，方便用 margin: auto 居中 */
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 180px; /* 调整为你希望的LOGO最大高度 */
+    /* 如果你的图片本身就是正方形或你希望它保持原始比例，可以只设置max-height或max-width */
+    /* 例如: max-width: 300px; height: auto; */
+    margin-bottom: 10px; /* LOGO 和下方标题的间距 */
+}
+
+.hero-title {
+    font-size: 2rem; /* 调整标题字体大小 */
+    color: #333;      /* 标题颜色 */
+    margin-top: 0;     /* 移除标题上方的默认边距 */
+    margin-bottom: 10px; /* 标题和下方内容的间距 */
+    font-weight: bold;
+}
+
+/* 欢迎内容区域的样式 (如果你希望这部分也居中) */
+.welcome-content {
+    text-align: center;
+    /* margin-top: 20px; /* 如果hero-section已有margin-bottom，这里可能不需要 */
+}
+
+/* 确保搜索表单的样式 (如果需要) */
+.search-form .form-label {
+    font-size: 0.9rem; /* 搜索表单标签小一点 */
+    margin-bottom: 0.25rem;
+}
+.search-form .form-control-sm,
+.search-form .form-select-sm {
+    font-size: 0.9rem; /* 搜索表单输入框小一点 */
+}
+.search-form .row > div { /* 确保列在小屏幕上也能良好对齐 */
+    margin-bottom: 0.5rem; /* 给每个搜索条件之间一点垂直间距 */
+}
+.search-form .btn-sm {
+    padding-top: 0.5rem; /* 调整按钮的上下padding使其与其他输入框高度更协调 */
+    padding-bottom: 0.5rem;
 }
