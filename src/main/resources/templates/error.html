@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/_header :: common_header(pageTitle='发生错误')}"></head>
+<body>
+<div class="content-wrapper">
+  <div class="container page-content text-center">
+    <img th:src="@{/images/error-icon.png}" alt="Error Icon" class="error-icon mb-3" style="width: 100px; height: auto;"/>
+    <h1>发生错误</h1>
+
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">错误信息:</h4>
+      <p th:text="${errorMessage ?: '未知错误'}">发生了一个错误。</p>
+      <hr th:if="${detailMessage}">
+      <p class="mb-0" th:if="${detailMessage}" th:text="${detailMessage}">详细信息。</p>
+    </div>
+
+    <p th:if="${url}">
+      请求的 URL: <code th:text="${url}"></code>
+    </p>
+
+    <!-- 开发模式下可以显示更详细的异常信息，生产环境应隐藏 -->
+    <!--
+    <div th:if="${exception != null and #strings.contains(#httpServletRequest.getServerName(), 'localhost')}">
+        <hr>
+        <h4>异常详情 (仅开发模式显示):</h4>
+        <pre style="text-align: left; background-color: #f8f9fa; padding: 10px; border: 1px solid #dee2e6; overflow-x: auto;">
+            <code th:text="${exception.toString()}"></code>
+            <th:block th:each="st : ${exception.getStackTrace()}">
+                <br/> <span style="padding-left: 20px;" th:text="${st.toString()}"></span>
+            </th:block>
+        </pre>
+    </div>
+    -->
+
+    <p class="mt-4">
+      <a th:href="@{/}" class="btn btn-primary">返回首页</a>
+      <a href="javascript:history.back()" class="btn btn-secondary">返回上一页</a>
+    </p>
+  </div>
+</div>
+<div th:replace="~{common/_footer :: common_footer}"></div>
+</body>
+</html>
