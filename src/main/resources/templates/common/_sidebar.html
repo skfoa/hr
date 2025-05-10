@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside th:fragment="common_sidebar" class="sidebar">
+  <h4>快速导航</h4>
+  <ul>
+    <li><a th:href="@{/}">仪表盘</a></li>
+    <li><a th:href="@{/departments/list}">部门管理</a></li>
+    <li><a th:href="@{/jobs/list}">岗位管理</a></li>
+    <li><a th:href="@{/employees/list}">员工管理</a></li>
+  </ul>
+</aside>
+</body>
+</html>

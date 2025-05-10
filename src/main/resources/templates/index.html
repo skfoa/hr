@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/_header :: common_header(pageTitle='欢迎 - HR管理系统')}">
+    <!-- common_header 将替换这里的 head 内容 -->
+</head>
+<body>
+<!-- 如果有侧边栏，可以在这里引入
+<div th:replace="~{common/_sidebar :: common_sidebar}"></div>
+-->
+<div class="content-wrapper"> <!-- 具体页面内容包裹器 -->
+    <div class="container page-content">
+        <h1>欢迎来到人力资源管理系统</h1>
+        <p>这是一个基于 Spring Boot, MyBatis 和 Thymeleaf 实现的简单人力资源管理系统。</p>
+        <p>请从顶部导航栏选择您要操作的模块。</p>
+
+        <div class="dashboard-links">
+            <a th:href="@{/departments/list}" class="dashboard-link">管理部门信息</a>
+            <a th:href="@{/jobs/list}" class="dashboard-link">管理岗位信息</a>
+            <a th:href="@{/employees/list}" class="dashboard-link">管理员工信息</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/_footer :: common_footer}"></div>
+</body>
+</html>
