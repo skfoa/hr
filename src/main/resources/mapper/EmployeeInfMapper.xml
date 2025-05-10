@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.hr.mapper.EmployeeInfMapper">
+
+    <!-- 基础员工信息 ResultMap (不包含关联对象) -->
+    <resultMap id="BaseEmployeeResultMap" type="EmployeeInf">
+        <id property="empId" column="emp_id"/>
+        <result property="empName" column="emp_name"/>
+        <result property="empCardId" column="emp_card_id"/>
+        <result property="empAddress" column="emp_address"/>
+        <result property="empPostCode" column="emp_post_code"/>
+        <result property="empTel" column="emp_tel"/>
+        <result property="empPhone" column="emp_phone"/>
+        <result property="empQq" column="emp_qq"/>
+        <result property="empEmail" column="emp_email"/>
+        <result property="empSex" column="emp_sex"/>
+        <result property="empParty" column="emp_party"/>
+        <result property="empBirth" column="emp_birth"/>
+        <result property="empRace" column="emp_race"/>
+        <result property="empEdu" column="emp_edu"/>
+        <result property="empSpeciality" column="emp_speciality"/>
+        <result property="empHobby" column="emp_hobby"/>
+        <result property="empRemark" column="emp_remark"/>
+        <result property="empCreateDate" column="emp_create_date"/>
+        <!-- 如果POJO中有empDeptId和empJobId属性，可以映射 -->
+        <!-- <result property="empDeptId" column="emp_dept_id"/> -->
+        <!-- <result property="empJobId" column="emp_job_id"/> -->
+    </resultMap>
+
+    <!-- 员工信息及关联部门和岗位详情 ResultMap -->
+    <resultMap id="EmployeeWithDetailsResultMap" type="EmployeeInf" extends="BaseEmployeeResultMap">
+        <!-- 关联部门信息 (一对一) -->
+        <association property="department" javaType="DeptInf">
+            <id property="deptId" column="d_dept_id"/> <!-- 使用别名 d_dept_id -->
+            <result property="deptName" column="dept_name"/>
+            <result property="deptRemark" column="d_dept_remark"/> <!-- 使用别名 d_dept_remark -->
+        </association>
+        <!-- 关联岗位信息 (一对一) -->
+        <association property="job" javaType="JobInf">
+            <id property="jobId" column="j_job_id"/> <!-- 使用别名 j_job_id -->
+            <result property="jobName" column="job_name"/>
+            <result property="jobRemark" column="j_job_remark"/> <!-- 使用别名 j_job_remark -->
+        </association>
+    </resultMap>
+
+    <!-- 可复用的员工表列名 -->
+    <sql id="employeeBaseColumns">
+        e.emp_id, e.emp_name, e.emp_card_id, e.emp_address, e.emp_post_code, e.emp_tel, e.emp_phone, e.emp_qq, e.emp_email,
+        e.emp_sex, e.emp_party, e.emp_birth, e.emp_race, e.emp_edu, e.emp_speciality, e.emp_hobby, e.emp_remark, e.emp_create_date,
+        e.emp_dept_id, e.emp_job_id
+    </sql>
+
+    <!-- 可复用的员工及关联表列名 -->
+    <sql id="employeeWithDetailsColumns">
+        e.emp_id, e.emp_name, e.emp_card_id, e.emp_address, e.emp_post_code, e.emp_tel, e.emp_phone, e.emp_qq, e.emp_email,
+        e.emp_sex, e.emp_party, e.emp_birth, e.emp_race, e.emp_edu, e.emp_speciality, e.emp_hobby, e.emp_remark, e.emp_create_date,
+        d.dept_id AS d_dept_id, d.dept_name, d.dept_remark AS d_dept_remark,
+        j.job_id AS j_job_id, j.job_name, j.job_remark AS j_job_remark
+    </sql>
+
+    <select id="findAllBasic" resultMap="BaseEmployeeResultMap">
+        SELECT <include refid="employeeBaseColumns" />
+        FROM employee_inf e
+        ORDER BY e.emp_id ASC
+    </select>
+
+    <select id="findByIdBasic" parameterType="java.lang.Integer" resultMap="BaseEmployeeResultMap">
+        SELECT <include refid="employeeBaseColumns" />
+        FROM employee_inf e
+        WHERE e.emp_id = #{empId}
+    </select>
+
+    <select id="findAllWithDetails" resultMap="EmployeeWithDetailsResultMap">
+        SELECT <include refid="employeeWithDetailsColumns" />
+        FROM employee_inf e
+        LEFT JOIN dept_inf d ON e.emp_dept_id = d.dept_id
+        LEFT JOIN job_inf j ON e.emp_job_id = j.job_id
+        ORDER BY e.emp_id ASC
+    </select>
+
+    <select id="findByIdWithDetails" parameterType="java.lang.Integer" resultMap="EmployeeWithDetailsResultMap">
+        SELECT <include refid="employeeWithDetailsColumns" />
+        FROM employee_inf e
+        LEFT JOIN dept_inf d ON e.emp_dept_id = d.dept_id
+        LEFT JOIN job_inf j ON e.emp_job_id = j.job_id
+        WHERE e.emp_id = #{empId}
+    </select>
+
+    <insert id="insert" parameterType="EmployeeInf" useGeneratedKeys="true" keyProperty="empId">
+        INSERT INTO employee_inf
+        (emp_dept_id, emp_job_id, emp_name, emp_card_id, emp_address, emp_post_code, emp_tel, emp_phone, emp_qq, emp_email,
+         emp_sex, emp_party, emp_birth, emp_race, emp_edu, emp_speciality, emp_hobby, emp_remark, emp_create_date)
+        VALUES
+            (#{department.deptId}, #{job.jobId}, #{empName}, #{empCardId}, #{empAddress}, #{empPostCode}, #{empTel}, #{empPhone}, #{empQq}, #{empEmail},
+             #{empSex}, #{empParty}, #{empBirth, jdbcType=TIMESTAMP}, #{empRace}, #{empEdu}, #{empSpeciality}, #{empHobby}, #{empRemark}, #{empCreateDate, jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="EmployeeInf">
+        UPDATE employee_inf
+        <set>
+            <if test="department != null and department.deptId != null">emp_dept_id = #{department.deptId},</if>
+            <if test="job != null and job.jobId != null">emp_job_id = #{job.jobId},</if>
+            <if test="empName != null and empName != ''">emp_name = #{empName},</if>
+            <if test="empCardId != null and empCardId != ''">emp_card_id = #{empCardId},</if>
+            <if test="empAddress != null and empAddress != ''">emp_address = #{empAddress},</if>
+            <if test="empPostCode != null">emp_post_code = #{empPostCode},</if> <!-- 邮编允许为空字符串 -->
+            <if test="empTel != null">emp_tel = #{empTel},</if>
+            <if test="empPhone != null and empPhone != ''">emp_phone = #{empPhone},</if>
+            <if test="empQq != null">emp_qq = #{empQq},</if>
+            <if test="empEmail != null and empEmail != ''">emp_email = #{empEmail},</if>
+            <if test="empSex != null">emp_sex = #{empSex},</if>
+            <if test="empParty != null">emp_party = #{empParty},</if>
+            <if test="empBirth != null">emp_birth = #{empBirth, jdbcType=TIMESTAMP},</if>
+            <if test="empRace != null">emp_race = #{empRace},</if>
+            <if test="empEdu != null">emp_edu = #{empEdu},</if>
+            <if test="empSpeciality != null">emp_speciality = #{empSpeciality},</if>
+            <if test="empHobby != null">emp_hobby = #{empHobby},</if>
+            <if test="empRemark != null">emp_remark = #{empRemark},</if>
+            <if test="empCreateDate != null">emp_create_date = #{empCreateDate, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE emp_id = #{empId}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM employee_inf WHERE emp_id = #{empId}
+    </delete>
+
+    <select id="findByCriteria" parameterType="map" resultMap="EmployeeWithDetailsResultMap">
+        SELECT <include refid="employeeWithDetailsColumns" />
+        FROM employee_inf e
+        LEFT JOIN dept_inf d ON e.emp_dept_id = d.dept_id
+        LEFT JOIN job_inf j ON e.emp_job_id = j.job_id
+        <where>
+            <if test="empName != null and empName != ''">
+                AND e.emp_name LIKE CONCAT('%', #{empName}, '%')
+            </if>
+            <if test="empPhone != null and empPhone != ''">
+                AND e.emp_phone = #{empPhone}
+            </if>
+            <if test="empCardId != null and empCardId != ''">
+                AND e.emp_card_id = #{empCardId}
+            </if>
+            <if test="empSex != null">
+                AND e.emp_sex = #{empSex}
+            </if>
+            <if test="deptId != null">
+                AND e.emp_dept_id = #{deptId}
+            </if>
+            <if test="jobId != null">
+                AND e.emp_job_id = #{jobId}
+            </if>
+            <!-- 可以添加更多日期范围等条件 -->
+        </where>
+        ORDER BY e.emp_id ASC
+    </select>
+
+    <select id="countByDeptId" parameterType="java.lang.Integer" resultType="int">
+        SELECT COUNT(*) FROM employee_inf WHERE emp_dept_id = #{deptId}
+    </select>
+
+    <select id="countByJobId" parameterType="java.lang.Integer" resultType="int">
+        SELECT COUNT(*) FROM employee_inf WHERE emp_job_id = #{jobId}
+    </select>
+
+</mapper>
