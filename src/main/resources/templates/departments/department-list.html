@@ -1,48 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{common/_header :: common_header(pageTitle=${pageTitle})}"></head>
+
+<!-- 1. 引入头部元信息和CSS (来自 common/_header.html 的 page_head 片段) -->
+<head th:replace="~{common/_header :: page_head(pageTitleParam=${pageTitle})}"></head>
+
 <body>
-<div class="content-wrapper">
-    <div class="container page-content">
-        <h2 th:text="${pageTitle}">部门列表</h2>
+<!-- 2. 引入导航栏 (来自 common/_header.html 的 main_navbar 片段) -->
+<div th:replace="~{common/_header :: main_navbar}"></div>
 
-        <!-- Flash Messages for success/error -->
-        <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
-        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+<!-- 页面主要内容区域 -->
+<div class="main-container"> <!-- 这个 div 包裹主要内容 -->
+    <div class="content-wrapper">
+        <div class="container page-content">
+            <h2 th:text="${pageTitle}">部门列表</h2>
 
-        <p>
-            <a th:href="@{/departments/add}" class="btn btn-primary">添加新部门</a>
-        </p>
+            <!-- Flash Messages for success/error -->
+            <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
-        <table class="table table-striped table-bordered">
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>部门名称</th>
-                <th>部门备注</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="dept : ${departments}" th:if="${!#lists.isEmpty(departments)}">
-                <td th:text="${dept.deptId}">1</td>
-                <td th:text="${dept.deptName}">技术部</td>
-                <td th:text="${dept.deptRemark}">技术研发</td>
-                <td>
-                    <a th:href="@{/departments/edit/{id}(id=${dept.deptId})}" class="btn btn-sm btn-warning">编辑</a>
-                    <!-- 修改后的删除链接 -->
-                    <a th:href="@{/departments/delete/{id}(id=${dept.deptId})}"
-                       class="btn btn-sm btn-danger delete-dept-link"
-                       th:attr="data-confirm-message='确定要删除部门 “' + ${dept.deptName} + '” 吗？这可能会影响关联的员工信息。'">删除</a>
-                </td>
-            </tr>
-            <tr th:if="${#lists.isEmpty(departments)}">
-                <td colspan="4" class="text-center">暂无部门信息</td>
-            </tr>
-            </tbody>
-        </table>
+            <!-- 搜索表单 (如果在这个页面有的话，从之前的 employee-list.html 复制过来并调整) -->
+            <!-- <form th:action="@{/departments/list}" method="get" class="mb-3 search-form"> ... </form> -->
+
+            <div class="action-buttons-bar mb-3"> <!-- 统一操作按钮的容器 -->
+                <a th:href="@{/departments/add}" class="btn btn-primary">添加新部门</a>
+                <a th:href="@{/}" class="btn btn-info ms-2">返回首页</a> <!-- 添加返回首页按钮 -->
+            </div>
+
+
+            <table class="table table-striped table-bordered table-hover"> <!-- 添加了 table-hover -->
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>部门名称</th>
+                    <th>部门备注</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dept : ${departments}" th:if="${!#lists.isEmpty(departments)}">
+                    <td th:text="${dept.deptId}">1</td>
+                    <td th:text="${dept.deptName}">技术部</td>
+                    <td th:text="${dept.deptRemark}">技术研发</td>
+                    <td>
+                        <a th:href="@{/departments/edit/{id}(id=${dept.deptId})}" class="btn btn-sm btn-warning">编辑</a>
+                        <a th:href="@{/departments/delete/{id}(id=${dept.deptId})}"
+                           class="btn btn-sm btn-danger delete-dept-link"
+                           th:attr="data-confirm-message='确定要删除部门 “' + ${dept.deptName} + '” 吗？这可能会影响关联的员工信息。'">删除</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(departments)}">
+                    <td colspan="4" class="text-center">暂无部门信息</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</div> <!-- main-container 结束 -->
+
+<!-- 3. 引入页脚 -->
 <div th:replace="~{common/_footer :: common_footer}"></div>
 
 <!-- 将 JavaScript 直接添加到页面底部 -->

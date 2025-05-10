@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{common/_header :: common_header(pageTitle=${pageTitle})}"></head>
+
+<!-- 1. 引入头部元信息和CSS (来自 common/_header.html 的 page_head 片段) -->
+<head th:replace="~{common/_header :: page_head(pageTitleParam=${pageTitle})}"></head>
+
 <body>
-<div class="content-wrapper">
-  <div class="container page-content">
-    <h2 th:text="${pageTitle}">表单</h2>
+<!-- 2. 引入导航栏 (来自 common/_header.html 的 main_navbar 片段) -->
+<div th:replace="~{common/_header :: main_navbar}"></div>
 
-    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+<!-- 页面主要内容区域 -->
+<div class="main-container"> <!-- 这个 div 包裹主要内容 -->
+  <div class="content-wrapper">
+    <div class="container page-content">
+      <h2 th:text="${pageTitle}">表单</h2>
 
-    <!-- 修改点在这里：th:action="@{${formAction}}" -->
-    <form th:action="@{${formAction}}" th:object="${job}" method="post" class="needs-validation" novalidate>
+      <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
-      <div class="mb-3">
-        <label for="jobName" class="form-label">岗位名称:</label>
-        <input type="text" id="jobName" th:field="*{jobName}" class="form-control" required />
-        <div class="invalid-feedback">岗位名称不能为空。</div>
-      </div>
+      <form th:action="@{${formAction}}" th:object="${job}" method="post" class="needs-validation" novalidate>
 
-      <div class="mb-3">
-        <label for="jobRemark" class="form-label">岗位备注:</label>
-        <textarea id="jobRemark" th:field="*{jobRemark}" class="form-control" rows="3"></textarea>
-      </div>
+        <div class="mb-3">
+          <label for="jobName" class="form-label">岗位名称:</label>
+          <input type="text" id="jobName" th:field="*{jobName}" class="form-control" required />
+          <div class="invalid-feedback">岗位名称不能为空。</div>
+        </div>
 
-      <div class="form-actions">
-        <button type="submit" class="btn btn-success" th:text="${isEdit} ? '更新岗位' : '添加岗位'"></button>
-        <a th:href="@{/jobs/list}" class="btn btn-secondary">取消</a>
-      </div>
-    </form>
+        <div class="mb-3">
+          <label for="jobRemark" class="form-label">岗位备注:</label>
+          <textarea id="jobRemark" th:field="*{jobRemark}" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success" th:text="${isEdit} ? '更新岗位' : '添加岗位'"></button>
+          <a th:href="@{/jobs/list}" class="btn btn-secondary">取消</a>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+</div> <!-- main-container 结束 -->
+
+<!-- 3. 引入页脚 -->
 <div th:replace="~{common/_footer :: common_footer}"></div>
 
 <script>

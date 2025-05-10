@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="common_header(pageTitle)">
+
+<!-- 片段1: 用于替换主模板的 <head> 标签内容 -->
+<!-- 包含页面的元信息、标题和CSS链接 -->
+<head th:fragment="page_head(pageTitleParam)">
     <meta charset="UTF-8">
-    <title th:text="${pageTitle} ?: 'HR Management System'"></title>
+    <title th:text="${pageTitleParam} ?: 'HR Management System Default Title'"></title>
     <!-- 引入全局CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-    <!-- 可以引入Bootstrap等UI框架 -->
+    <!-- 可以在这里添加其他的通用 <link> 或 <meta> 标签 -->
+    <!-- 例如，引入Bootstrap CSS -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
-<body>
-<header>
+
+
+<!-- 片段2: 用于在主模板的 <body> 内部插入导航栏 -->
+<!-- 只包含 <header> 和 <nav> 结构 -->
+<!-- 外层的 <body> 标签在这里只是为了让这个片段在IDE中看起来像一个完整的HTML（方便预览），
+     当这个片段被 th:replace 或 th:include 时，外层的这个 <body> 不会被包含进去，
+     只有 th:fragment 定义的元素及其内容会被使用。
+-->
+<body> <!-- 这个 body 标签在片段被引用时实际上会被忽略 -->
+<header th:fragment="main_navbar">
     <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" th:href="@{/}">HR管理系统</a>
@@ -23,8 +35,6 @@
         </div>
     </nav>
 </header>
-<div class="main-container"> <!-- 主内容容器开始 -->
-    <!-- 页面主内容放在这里 -->
-</div> <!-- 主内容容器结束 -->
 </body>
+
 </html>

@@ -97,7 +97,7 @@ body {
 /* 页面标题 */
 h1, h2 { /* 这是全局的h1, h2样式 */
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 h1 { font-size: 2.2rem; } /* 全局 h1 */
 h2 { font-size: 1.8rem; } /* 全局 h2 */
@@ -330,14 +330,14 @@ textarea.form-control {
     max-height: 180px;
     /* 如果你的图片本身就是正方形或你希望它保持原始比例，可以只设置max-height或max-width */
     /* 例如: max-width: 300px; height: auto; */
-    margin-bottom: 10px; /* LOGO 和下方标题的间距 */
+    margin-bottom: 5px; /* LOGO 和下方标题的间距 */
 }
 
 .hero-title {
     font-size: 2rem; /* 调整标题字体大小 */
     color: #333;      /* 标题颜色 */
     margin-top: 0;     /* 移除标题上方的默认边距 */
-    margin-bottom: 10px; /* 标题和下方内容的间距 */
+    margin-bottom: 0; /* 移除标题和下方内容的间距 */
     font-weight: bold;
 }
 
@@ -345,6 +345,10 @@ textarea.form-control {
 .welcome-content {
     text-align: center;
     /* margin-top: 20px; /* 如果hero-section已有margin-bottom，这里可能不需要 */
+}
+.welcome-content h2 {
+    margin-top: 5px; /* 或者 0px，或者你期望的任何值 */
+    /* margin-bottom: 10px; /* 这是全局h2的下边距，可以保持或按需调整 */
 }
 
 /* 确保搜索表单的样式  */

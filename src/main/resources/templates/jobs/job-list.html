@@ -1,47 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{common/_header :: common_header(pageTitle=${pageTitle})}"></head>
+
+<!-- 1. 引入头部元信息和CSS (来自 common/_header.html 的 page_head 片段) -->
+<head th:replace="~{common/_header :: page_head(pageTitleParam=${pageTitle})}"></head>
+
 <body>
-<div class="content-wrapper">
-  <div class="container page-content">
-    <h2 th:text="${pageTitle}">岗位列表</h2>
+<!-- 2. 引入导航栏 (来自 common/_header.html 的 main_navbar 片段) -->
+<div th:replace="~{common/_header :: main_navbar}"></div>
 
-    <!-- Flash Messages for success/error -->
-    <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
-    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+<!-- 页面主要内容区域 -->
+<div class="main-container"> <!-- 这个 div 包裹主要内容 -->
+  <div class="content-wrapper">
+    <div class="container page-content">
+      <h2 th:text="${pageTitle}">岗位列表</h2>
 
-    <p>
-      <a th:href="@{/jobs/add}" class="btn btn-primary">添加新岗位</a>
-    </p>
+      <!-- Flash Messages for success/error -->
+      <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
+      <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
-    <table class="table table-striped table-bordered">
-      <thead class="table-dark">
-      <tr>
-        <th>ID</th>
-        <th>岗位名称</th>
-        <th>岗位备注</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="job : ${jobs}" th:if="${!#lists.isEmpty(jobs)}">
-        <td th:text="${job.jobId}">1</td>
-        <td th:text="${job.jobName}">Java开发工程师</td>
-        <td th:text="${job.jobRemark}">负责Java后端开发</td>
-        <td>
-          <a th:href="@{/jobs/edit/{id}(id=${job.jobId})}" class="btn btn-sm btn-warning">编辑</a>
-          <a th:href="@{/jobs/delete/{id}(id=${job.jobId})}"
-             class="btn btn-sm btn-danger delete-job-link"
-          th:attr="data-confirm-message='确定要删除岗位 “' + ${job.jobName} + '” 吗？这可能会影响关联的员工信息。'">删除</a>
-        </td>
-      </tr>
-      <tr th:if="${#lists.isEmpty(jobs)}">
-        <td colspan="4" class="text-center">暂无岗位信息</td>
-      </tr>
-      </tbody>
-    </table>
+      <!-- 搜索表单 (如果这个页面也需要搜索功能，可以从 employee-list.html 借鉴并修改) -->
+      <!-- <form th:action="@{/jobs/list}" method="get" class="mb-3 search-form"> ... </form> -->
+
+      <div class="action-buttons-bar mb-3"> <!-- 统一操作按钮的容器 -->
+        <a th:href="@{/jobs/add}" class="btn btn-primary">添加新岗位</a>
+        <a th:href="@{/}" class="btn btn-info ms-2">返回首页</a> <!-- 添加返回首页按钮 -->
+      </div>
+
+      <table class="table table-striped table-bordered table-hover"> <!-- 添加了 table-hover -->
+        <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>岗位名称</th>
+          <th>岗位备注</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${jobs}" th:if="${!#lists.isEmpty(jobs)}">
+          <td th:text="${job.jobId}">1</td>
+          <td th:text="${job.jobName}">Java开发工程师</td>
+          <td th:text="${job.jobRemark}">负责Java后端开发</td>
+          <td>
+            <a th:href="@{/jobs/edit/{id}(id=${job.jobId})}" class="btn btn-sm btn-warning">编辑</a>
+            <a th:href="@{/jobs/delete/{id}(id=${job.jobId})}"
+               class="btn btn-sm btn-danger delete-job-link"
+               th:attr="data-confirm-message='确定要删除岗位 “' + ${job.jobName} + '” 吗？这可能会影响关联的员工信息。'">删除</a>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(jobs)}">
+          <td colspan="4" class="text-center">暂无岗位信息</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+</div> <!-- main-container 结束 -->
+
+<!-- 3. 引入页脚 -->
 <div th:replace="~{common/_footer :: common_footer}"></div>
 
 <!-- JavaScript for delete confirmation -->

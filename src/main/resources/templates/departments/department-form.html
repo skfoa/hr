@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{common/_header :: common_header(pageTitle=${pageTitle})}"></head>
+
+<!-- 1. 引入头部元信息和CSS (来自 common/_header.html 的 page_head 片段) -->
+<head th:replace="~{common/_header :: page_head(pageTitleParam=${pageTitle})}"></head>
+
 <body>
-<div class="content-wrapper">
-  <div class="container page-content">
-    <h2 th:text="${pageTitle}">表单</h2>
+<!-- 2. 引入导航栏 (来自 common/_header.html 的 main_navbar 片段) -->
+<div th:replace="~{common/_header :: main_navbar}"></div>
 
-    <!-- Flash Messages for success/error (如果直接返回此页面而不是重定向) -->
-    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+<!-- 页面主要内容区域 -->
+<div class="main-container"> <!-- 这个 div 包裹主要内容，确保页脚在内容不足时也能在底部 -->
+  <div class="content-wrapper">
+    <div class="container page-content">
+      <h2 th:text="${pageTitle}">表单</h2>
 
-    <!-- 修改点在这里：th:action="@{${formAction}}" -->
-    <form th:action="@{${formAction}}" th:object="${department}" method="post" class="needs-validation" novalidate>
-      <!-- 如果是编辑模式，可以包含一个隐藏的ID字段，但通常ID在URL中，且deptId已在对象中 -->
-      <!-- <input type="hidden" th:if="${isEdit}" th:field="*{deptId}" /> -->
+      <!-- Flash Messages for success/error (如果直接返回此页面而不是重定向) -->
+      <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
-      <div class="mb-3">
-        <label for="deptName" class="form-label">部门名称:</label>
-        <input type="text" id="deptName" th:field="*{deptName}" class="form-control" required />
-        <!-- 可以添加Thymeleaf的错误显示，如果后端校验失败并返回到此页面 -->
-        <!-- <div th:if="${#fields.hasErrors('deptName')}" th:errors="*{deptName}" class="invalid-feedback d-block"></div> -->
-        <div class="invalid-feedback">部门名称不能为空。</div>
-      </div>
+      <form th:action="@{${formAction}}" th:object="${department}" method="post" class="needs-validation" novalidate>
+        <!-- 如果是编辑模式，可以包含一个隐藏的ID字段，但通常ID在URL中，且deptId已在对象中 -->
+        <!-- <input type="hidden" th:if="${isEdit}" th:field="*{deptId}" /> -->
 
-      <div class="mb-3">
-        <label for="deptRemark" class="form-label">部门备注:</label>
-        <textarea id="deptRemark" th:field="*{deptRemark}" class="form-control" rows="3"></textarea>
-      </div>
+        <div class="mb-3">
+          <label for="deptName" class="form-label">部门名称:</label>
+          <input type="text" id="deptName" th:field="*{deptName}" class="form-control" required />
+          <div class="invalid-feedback">部门名称不能为空。</div>
+        </div>
 
-      <div class="form-actions">
-        <button type="submit" class="btn btn-success" th:text="${isEdit} ? '更新部门' : '添加部门'"></button>
-        <a th:href="@{/departments/list}" class="btn btn-secondary">取消</a>
-      </div>
-    </form>
+        <div class="mb-3">
+          <label for="deptRemark" class="form-label">部门备注:</label>
+          <textarea id="deptRemark" th:field="*{deptRemark}" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success" th:text="${isEdit} ? '更新部门' : '添加部门'"></button>
+          <a th:href="@{/departments/list}" class="btn btn-secondary">取消</a>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+</div> <!-- main-container 结束 -->
+
+<!-- 3. 引入页脚 (页脚在 common/_footer.html 中定义了 common_footer 片段) -->
 <div th:replace="~{common/_footer :: common_footer}"></div>
 
 <script>
