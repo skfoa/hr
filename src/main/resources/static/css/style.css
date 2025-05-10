@@ -363,3 +363,9 @@ textarea.form-control {
     padding-top: 0.5rem; /* 调整按钮的上下padding使其与其他输入框高度更协调 */
     padding-bottom: 0.5rem;
 }
+.error-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem; /* 与HTML中的mb-3对应 */
+}
