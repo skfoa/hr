@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/_header :: common_header(pageTitle=${pageTitle})}"></head>
+<body>
+<div class="content-wrapper">
+  <div class="container page-content">
+    <h2 th:text="${pageTitle}">表单</h2>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+
+    <form th:action="${formAction}" th:object="${job}" method="post" class="needs-validation" novalidate>
+
+      <div class="mb-3">
+        <label for="jobName" class="form-label">岗位名称:</label>
+        <input type="text" id="jobName" th:field="*{jobName}" class="form-control" required />
+        <div class="invalid-feedback">岗位名称不能为空。</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="jobRemark" class="form-label">岗位备注:</label>
+        <textarea id="jobRemark" th:field="*{jobRemark}" class="form-control" rows="3"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success" th:text="${isEdit} ? '更新岗位' : '添加岗位'"></button>
+        <a th:href="@{/jobs/list}" class="btn btn-secondary">取消</a>
+      </div>
+    </form>
+  </div>
+</div>
+<div th:replace="~{common/_footer :: common_footer}"></div>
+
+<script>
+  // 简单的Bootstrap表单验证激活 (如果使用了Bootstrap)
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+              form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+              }, false)
+            })
+  })()
+</script>
+</body>
+</html>
