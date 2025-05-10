@@ -327,7 +327,7 @@ textarea.form-control {
     display: block; /* 让图片独占一行，方便用 margin: auto 居中 */
     margin-left: auto;
     margin-right: auto;
-    max-height: 180px; /* 调整为你希望的LOGO最大高度 */
+    max-height: 180px;
     /* 如果你的图片本身就是正方形或你希望它保持原始比例，可以只设置max-height或max-width */
     /* 例如: max-width: 300px; height: auto; */
     margin-bottom: 10px; /* LOGO 和下方标题的间距 */
@@ -341,13 +341,13 @@ textarea.form-control {
     font-weight: bold;
 }
 
-/* 欢迎内容区域的样式 (如果你希望这部分也居中) */
+/* 欢迎内容区域的样式  */
 .welcome-content {
     text-align: center;
     /* margin-top: 20px; /* 如果hero-section已有margin-bottom，这里可能不需要 */
 }
 
-/* 确保搜索表单的样式 (如果需要) */
+/* 确保搜索表单的样式  */
 .search-form .form-label {
     font-size: 0.9rem; /* 搜索表单标签小一点 */
     margin-bottom: 0.25rem;

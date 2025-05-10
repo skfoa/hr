@@ -31,4 +31,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // })()
 });
 
-// 你可以在这里添加更多的全局函数或特定页面的初始化逻辑（通过判断页面标识）
+// 可以在这里添加更多的全局函数或特定页面的初始化逻辑（通过判断页面标识）

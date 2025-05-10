@@ -54,7 +54,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 示例：如果你想将 /my-custom-static/** 映射到 classpath:/custom-static/
+        // 示例：将 /my-custom-static/** 映射到 classpath:/custom-static/
         // registry.addResourceHandler("/my-custom-static/**")
         //         .addResourceLocations("classpath:/custom-static/");
         // logger.info("Custom static resource handler registered for /my-custom-static/**.");

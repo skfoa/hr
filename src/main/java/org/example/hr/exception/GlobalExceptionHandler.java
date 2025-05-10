@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
         return mav;
     }
 
-    // 你可以根据需要添加更多针对特定异常类型的 @ExceptionHandler 方法
+    // 根据需要添加更多针对特定异常类型的 @ExceptionHandler 方法
     // 例如：
     // @ExceptionHandler(NoHandlerFoundException.class)
     // @ResponseStatus(HttpStatus.NOT_FOUND)
