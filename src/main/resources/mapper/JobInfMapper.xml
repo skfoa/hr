@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.hr.mapper.JobInfMapper">
+
+    <!--
+        resultType="JobInf" 和 parameterType="JobInf"
+        因为 application.properties 中配置了:
+        mybatis.type-aliases-package=org.example.hr.pojo
+        mybatis.configuration.map-underscore-to-camel-case=true
+    -->
+
+    <select id="findAll" resultType="JobInf">
+        SELECT job_id, job_name, job_remark
+        FROM job_inf
+        ORDER BY job_id ASC
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultType="JobInf">
+        SELECT job_id, job_name, job_remark
+        FROM job_inf
+        WHERE job_id = #{jobId}
+    </select>
+
+    <!-- findByName 方法已在 Mapper 接口中使用注解实现 -->
+
+    <insert id="insert" parameterType="JobInf" useGeneratedKeys="true" keyProperty="jobId">
+        INSERT INTO job_inf (job_name, job_remark)
+        VALUES (#{jobName}, #{jobRemark})
+    </insert>
+
+    <update id="update" parameterType="JobInf">
+        UPDATE job_inf
+        SET job_name = #{jobName},
+            job_remark = #{jobRemark}
+        WHERE job_id = #{jobId}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM job_inf
+        WHERE job_id = #{jobId}
+    </delete>
+
+</mapper>
