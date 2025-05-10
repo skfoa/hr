@@ -3,9 +3,9 @@ package org.example.hr.controller;
 import org.example.hr.pojo.DeptInf;
 import org.example.hr.pojo.EmployeeInf;
 import org.example.hr.pojo.JobInf;
-import org.example.hr.service.DeptInfService;
-import org.example.hr.service.EmployeeInfService;
-import org.example.hr.service.JobInfService;
+import org.example.hr.service.impl.DeptInfServicelmpl;
+import org.example.hr.service.impl.EmployeeInfServicelmpl;
+import org.example.hr.service.impl.JobInfServicelmpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +27,17 @@ public class EmployeeInfController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeInfController.class);
 
-    private final EmployeeInfService employeeInfService;
-    private final DeptInfService deptInfService;
-    private final JobInfService jobInfService;
+    private final EmployeeInfServicelmpl employeeInfServicelmpl;
+    private final DeptInfServicelmpl deptInfService;
+    private final JobInfServicelmpl jobInfServicelmpl;
 
     @Autowired
-    public EmployeeInfController(EmployeeInfService employeeInfService,
-                                 DeptInfService deptInfService,
-                                 JobInfService jobInfService) {
-        this.employeeInfService = employeeInfService;
+    public EmployeeInfController(EmployeeInfServicelmpl employeeInfServicelmpl,
+                                 DeptInfServicelmpl deptInfService,
+                                 JobInfServicelmpl jobInfServicelmpl) {
+        this.employeeInfServicelmpl = employeeInfServicelmpl;
         this.deptInfService = deptInfService;
-        this.jobInfService = jobInfService;
+        this.jobInfServicelmpl = jobInfServicelmpl;
     }
 
     /**
@@ -45,7 +45,7 @@ public class EmployeeInfController {
      */
     private void loadFormDependencies(Model model) {
         List<DeptInf> departments = deptInfService.getAllDepts();
-        List<JobInf> jobs = jobInfService.getAllJobs();
+        List<JobInf> jobs = jobInfServicelmpl.getAllJobs();
         model.addAttribute("departments", departments);
         model.addAttribute("jobs", jobs);
     }
@@ -77,9 +77,9 @@ public class EmployeeInfController {
 
         List<EmployeeInf> employees;
         if (params.isEmpty()) {
-            employees = employeeInfService.getAllEmployeesWithDetails();
+            employees = employeeInfServicelmpl.getAllEmployeesWithDetails();
         } else {
-            employees = employeeInfService.findEmployeesByCriteria(params);
+            employees = employeeInfServicelmpl.findEmployeesByCriteria(params);
         }
 
         model.addAttribute("employees", employees);
@@ -112,7 +112,7 @@ public class EmployeeInfController {
     @GetMapping("/edit/{empId}")
     public String showEditEmployeeForm(@PathVariable("empId") Integer empId, Model model, RedirectAttributes redirectAttributes) {
         logger.info("Request to show edit employee form for ID: {}", empId);
-        EmployeeInf employee = employeeInfService.getEmployeeByIdWithDetails(empId);
+        EmployeeInf employee = employeeInfServicelmpl.getEmployeeByIdWithDetails(empId);
         if (employee == null) {
             logger.warn("Employee not found for ID: {}", empId);
             redirectAttributes.addFlashAttribute("errorMessage", "未找到ID为 " + empId + " 的员工。");
@@ -145,7 +145,7 @@ public class EmployeeInfController {
         logger.info("Request to save new employee: {}", employeeInf.getEmpName());
         employeeInf.setEmpBirth(empBirthDate); // 设置生日
 
-        boolean success = employeeInfService.addEmployee(employeeInf);
+        boolean success = employeeInfServicelmpl.addEmployee(employeeInf);
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "员工 '" + employeeInf.getEmpName() + "' 添加成功！");
         } else {
@@ -172,7 +172,7 @@ public class EmployeeInfController {
         employeeInf.setEmpId(empId);
         employeeInf.setEmpBirth(empBirthDate);
 
-        boolean success = employeeInfService.updateEmployee(employeeInf);
+        boolean success = employeeInfServicelmpl.updateEmployee(employeeInf);
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "员工 '" + employeeInf.getEmpName() + "' 更新成功！");
             return "redirect:/employees/list";
@@ -195,13 +195,13 @@ public class EmployeeInfController {
     @GetMapping("/delete/{empId}")
     public String deleteEmployee(@PathVariable("empId") Integer empId, RedirectAttributes redirectAttributes) {
         logger.info("Request to delete employee ID: {}", empId);
-        EmployeeInf empToDelete = employeeInfService.getEmployeeByIdWithDetails(empId);
+        EmployeeInf empToDelete = employeeInfServicelmpl.getEmployeeByIdWithDetails(empId);
         if (empToDelete == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "删除失败：未找到ID为 " + empId + " 的员工。");
             return "redirect:/employees/list";
         }
 
-        boolean success = employeeInfService.deleteEmployeeById(empId);
+        boolean success = employeeInfServicelmpl.deleteEmployeeById(empId);
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "员工 '" + empToDelete.getEmpName() + "' 删除成功！");
         } else {

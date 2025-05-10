@@ -1,7 +1,7 @@
 package org.example.hr.controller;
 
 import org.example.hr.pojo.DeptInf;
-import org.example.hr.service.DeptInfService;
+import org.example.hr.service.impl.DeptInfServicelmpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ public class DeptInfController {
 
     private static final Logger logger = LoggerFactory.getLogger(DeptInfController.class);
 
-    private final DeptInfService deptInfService;
+    private final DeptInfServicelmpl deptInfService;
 
     @Autowired
-    public DeptInfController(DeptInfService deptInfService) {
+    public DeptInfController(DeptInfServicelmpl deptInfService) {
         this.deptInfService = deptInfService;
     }
 

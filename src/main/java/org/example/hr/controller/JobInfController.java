@@ -1,7 +1,7 @@
 package org.example.hr.controller;
 
 import org.example.hr.pojo.JobInf;
-import org.example.hr.service.JobInfService;
+import org.example.hr.service.impl.JobInfServicelmpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ public class JobInfController {
 
     private static final Logger logger = LoggerFactory.getLogger(JobInfController.class);
 
-    private final JobInfService jobInfService;
+    private final JobInfServicelmpl jobInfServicelmpl;
 
     @Autowired
-    public JobInfController(JobInfService jobInfService) {
-        this.jobInfService = jobInfService;
+    public JobInfController(JobInfServicelmpl jobInfServicelmpl) {
+        this.jobInfServicelmpl = jobInfServicelmpl;
     }
 
     /**
@@ -33,7 +33,7 @@ public class JobInfController {
     @GetMapping("/list")
     public String listJobs(Model model) {
         logger.info("Request to list all jobs");
-        List<JobInf> jobs = jobInfService.getAllJobs();
+        List<JobInf> jobs = jobInfServicelmpl.getAllJobs();
         model.addAttribute("jobs", jobs);
         model.addAttribute("pageTitle", "岗位列表");
         return "jobs/job-list"; // Thymeleaf模板路径: templates/jobs/job-list.html
@@ -64,7 +64,7 @@ public class JobInfController {
     @GetMapping("/edit/{jobId}")
     public String showEditJobForm(@PathVariable("jobId") Integer jobId, Model model, RedirectAttributes redirectAttributes) {
         logger.info("Request to show edit job form for ID: {}", jobId);
-        JobInf job = jobInfService.getJobById(jobId);
+        JobInf job = jobInfServicelmpl.getJobById(jobId);
         if (job == null) {
             logger.warn("Job not found for ID: {}", jobId);
             redirectAttributes.addFlashAttribute("errorMessage", "未找到ID为 " + jobId + " 的岗位。");
@@ -86,7 +86,7 @@ public class JobInfController {
     @PostMapping("/save")
     public String saveJob(@ModelAttribute("job") JobInf jobInf, RedirectAttributes redirectAttributes) {
         logger.info("Request to save new job: {}", jobInf.getJobName());
-        boolean success = jobInfService.addJob(jobInf);
+        boolean success = jobInfServicelmpl.addJob(jobInf);
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "岗位 '" + jobInf.getJobName() + "' 添加成功！");
         } else {
@@ -108,7 +108,7 @@ public class JobInfController {
                             RedirectAttributes redirectAttributes) {
         logger.info("Request to update job ID {}: {}", jobId, jobInf.getJobName());
         jobInf.setJobId(jobId);
-        boolean success = jobInfService.updateJob(jobInf);
+        boolean success = jobInfServicelmpl.updateJob(jobInf);
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "岗位 '" + jobInf.getJobName() + "' 更新成功！");
         } else {
@@ -126,13 +126,13 @@ public class JobInfController {
     @GetMapping("/delete/{jobId}")
     public String deleteJob(@PathVariable("jobId") Integer jobId, RedirectAttributes redirectAttributes) {
         logger.info("Request to delete job ID: {}", jobId);
-        JobInf jobToDelete = jobInfService.getJobById(jobId);
+        JobInf jobToDelete = jobInfServicelmpl.getJobById(jobId);
         if (jobToDelete == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "删除失败：未找到ID为 " + jobId + " 的岗位。");
             return "redirect:/jobs/list";
         }
 
-        boolean success = jobInfService.deleteJobById(jobId);
+        boolean success = jobInfServicelmpl.deleteJobById(jobId);
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "岗位 '" + jobToDelete.getJobName() + "' 删除成功！");
         } else {

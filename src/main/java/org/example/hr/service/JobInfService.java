@@ -1,49 +1,125 @@
 package org.example.hr.service;
 
+import org.example.hr.mapper.JobInfMapper;
 import org.example.hr.pojo.JobInf;
+import org.example.hr.service.impl.JobInfServicelmpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.Objects;
 
-public interface JobInfService {
+@Service
+public class JobInfService implements JobInfServicelmpl {
 
-    /**
-     * 获取所有岗位信息
-     * @return 岗位列表
-     */
-    List<JobInf> getAllJobs();
+    private static final Logger logger = LoggerFactory.getLogger(JobInfService.class);
 
-    /**
-     * 根据ID获取岗位信息
-     * @param jobId 岗位ID
-     * @return 岗位对象，如果不存在则返回null
-     */
-    JobInf getJobById(Integer jobId);
+    private final JobInfMapper jobInfMapper;
 
-    /**
-     * 根据名称获取岗位信息
-     * @param jobName 岗位名称
-     * @return 岗位对象，如果不存在则返回null
-     */
-    JobInf getJobByName(String jobName);
+    @Autowired
+    public JobInfService(JobInfMapper jobInfMapper) {
+        this.jobInfMapper = jobInfMapper;
+    }
 
-    /**
-     * 添加新岗位
-     * @param jobInf 待添加的岗位信息 (jobId 应为null)
-     * @return true 如果添加成功，false 如果岗位名称已存在或添加失败
-     */
-    boolean addJob(JobInf jobInf);
+    @Override
+    public List<JobInf> getAllJobs() {
+        logger.debug("Fetching all jobs");
+        return jobInfMapper.findAll();
+    }
 
-    /**
-     * 更新岗位信息
-     * @param jobInf 待更新的岗位信息 (jobId 必须有效)
-     * @return true 如果更新成功，false 如果岗位不存在、岗位名称冲突或更新失败
-     */
-    boolean updateJob(JobInf jobInf);
+    @Override
+    public JobInf getJobById(Integer jobId) {
+        logger.debug("Fetching job by id: {}", jobId);
+        if (jobId == null) {
+            return null;
+        }
+        return jobInfMapper.findById(jobId);
+    }
 
-    /**
-     * 根据ID删除岗位
-     * 注意：实际项目中可能需要检查该岗位下是否有员工。
-     * @param jobId 岗位ID
-     * @return true 如果删除成功，false 如果岗位不存在或删除失败
-     */
-    boolean deleteJobById(Integer jobId);
+    @Override
+    public JobInf getJobByName(String jobName) {
+        logger.debug("Fetching job by name: {}", jobName);
+        if (jobName == null || jobName.trim().isEmpty()) {
+            return null;
+        }
+        return jobInfMapper.findByName(jobName);
+    }
+
+    @Override
+    @Transactional
+    public boolean addJob(JobInf jobInf) {
+        if (jobInf == null || jobInf.getJobName() == null || jobInf.getJobName().trim().isEmpty()) {
+            logger.warn("Attempted to add job with null or empty name.");
+            return false;
+        }
+        JobInf existingJob = jobInfMapper.findByName(jobInf.getJobName().trim());
+        if (existingJob != null) {
+            logger.warn("Attempted to add job with existing name: {}", jobInf.getJobName());
+            return false;
+        }
+        try {
+            int result = jobInfMapper.insert(jobInf);
+            logger.info("Job added successfully: {}, ID: {}", jobInf.getJobName(), jobInf.getJobId());
+            return result > 0;
+        } catch (Exception e) {
+            logger.error("Error adding job: {}", jobInf.getJobName(), e);
+            return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean updateJob(JobInf jobInf) {
+        if (jobInf == null || jobInf.getJobId() == null || jobInf.getJobName() == null || jobInf.getJobName().trim().isEmpty()) {
+            logger.warn("Attempted to update job with invalid data.");
+            return false;
+        }
+        JobInf currentJob = jobInfMapper.findById(jobInf.getJobId());
+        if (currentJob == null) {
+            logger.warn("Attempted to update non-existent job with ID: {}", jobInf.getJobId());
+            return false;
+        }
+
+        JobInf existingJobWithNewName = jobInfMapper.findByName(jobInf.getJobName().trim());
+        if (existingJobWithNewName != null && !Objects.equals(existingJobWithNewName.getJobId(), jobInf.getJobId())) {
+            logger.warn("Attempted to update job ID {} with a name '{}' that already exists for job ID {}",
+                    jobInf.getJobId(), jobInf.getJobName(), existingJobWithNewName.getJobId());
+            return false;
+        }
+
+        try {
+            int result = jobInfMapper.update(jobInf);
+            logger.info("Job updated successfully: ID {}", jobInf.getJobId());
+            return result > 0;
+        } catch (Exception e) {
+            logger.error("Error updating job with ID: {}", jobInf.getJobId(), e);
+            return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteJobById(Integer jobId) {
+        if (jobId == null) {
+            logger.warn("Attempted to delete job with null ID.");
+            return false;
+        }
+        // 实际项目中，这里应该检查该岗位下是否有员工
+        JobInf jobToDelete = jobInfMapper.findById(jobId);
+        if (jobToDelete == null) {
+            logger.warn("Attempted to delete non-existent job with ID: {}", jobId);
+            return false;
+        }
+        try {
+            int result = jobInfMapper.deleteById(jobId);
+            logger.info("Job deleted successfully: ID {}", jobId);
+            return result > 0;
+        } catch (Exception e) {
+            logger.error("Error deleting job with ID: {}. Possible foreign key constraint.", jobId, e);
+            return false;
+        }
+    }
 }

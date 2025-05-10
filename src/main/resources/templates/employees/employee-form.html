@@ -9,7 +9,8 @@
     <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
     <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
-    <form th:action="${formAction}" th:object="${employee}" method="post" class="needs-validation" novalidate>
+    <!-- 修改点在这里：th:action="@{${formAction}}" -->
+    <form th:action="@{${formAction}}" th:object="${employee}" method="post" class="needs-validation" novalidate>
       <!-- 如果是编辑模式，可以放一个隐藏的ID字段，但通常ID在URL中 -->
       <input type="hidden" th:if="${isEdit}" th:field="*{empId}" />
 
@@ -91,7 +92,6 @@
         </div>
         <div class="col-md-4 mb-3">
           <label for="empBirthDate" class="form-label">出生日期:</label>
-          <!-- 注意：这里使用一个单独的 empBirthDate 字段名给 @RequestParam 接收 -->
           <input type="date" id="empBirthDate" name="empBirthDate"
                  th:value="${employee.empBirth != null ? #dates.format(employee.empBirth, 'yyyy-MM-dd') : ''}"
                  class="form-control" />
