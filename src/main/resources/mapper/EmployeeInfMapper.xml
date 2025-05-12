@@ -24,9 +24,6 @@
         <result property="empHobby" column="emp_hobby"/>
         <result property="empRemark" column="emp_remark"/>
         <result property="empCreateDate" column="emp_create_date"/>
-        <!-- 如果POJO中有empDeptId和empJobId属性，可以映射 -->
-        <!-- <result property="empDeptId" column="emp_dept_id"/> -->
-        <!-- <result property="empJobId" column="emp_job_id"/> -->
     </resultMap>
 
     <!-- 员工信息及关联部门和岗位详情 ResultMap -->
@@ -151,7 +148,6 @@
             <if test="jobId != null">
                 AND e.emp_job_id = #{jobId}
             </if>
-            <!-- 可以添加更多日期范围等条件 -->
         </where>
         ORDER BY e.emp_id ASC
     </select>

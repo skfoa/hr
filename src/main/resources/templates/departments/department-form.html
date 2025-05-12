@@ -14,12 +14,10 @@
     <div class="container page-content">
       <h2 th:text="${pageTitle}">表单</h2>
 
-      <!-- Flash Messages for success/error (如果直接返回此页面而不是重定向) -->
+      <!-- Flash Messages for success/error -->
       <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
       <form th:action="@{${formAction}}" th:object="${department}" method="post" class="needs-validation" novalidate>
-        <!-- 如果是编辑模式，可以包含一个隐藏的ID字段，但通常ID在URL中，且deptId已在对象中 -->
-        <!-- <input type="hidden" th:if="${isEdit}" th:field="*{deptId}" /> -->
 
         <div class="mb-3">
           <label for="deptName" class="form-label">部门名称:</label>
@@ -45,7 +43,7 @@
 <div th:replace="~{common/_footer :: common_footer}"></div>
 
 <script>
-  // 简单的Bootstrap表单验证激活 (如果使用了Bootstrap)
+  // 简单的Bootstrap表单验证激活
   (function () {
     'use strict'
     var forms = document.querySelectorAll('.needs-validation')

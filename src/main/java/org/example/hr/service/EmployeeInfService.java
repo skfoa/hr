@@ -78,7 +78,6 @@ public class EmployeeInfService implements EmployeeInfServicelmpl {
             return false;
         }
 
-
         if (employeeInf.getEmpJobIdInput() != null) {
             JobInf job = jobInfMapper.findById(employeeInf.getEmpJobIdInput());
             if (job == null) {
@@ -90,7 +89,6 @@ public class EmployeeInfService implements EmployeeInfServicelmpl {
             logger.warn("Job ID is required for adding employee.");
             return false;
         }
-
 
         // 设置创建时间
         if (employeeInf.getEmpCreateDate() == null) {
@@ -126,7 +124,7 @@ public class EmployeeInfService implements EmployeeInfServicelmpl {
             DeptInf dept = deptInfMapper.findById(employeeInf.getEmpDeptIdInput());
             if (dept == null) {
                 logger.warn("Department not found for ID: {} during update", employeeInf.getEmpDeptIdInput());
-                return false; // 或者根据业务逻辑决定是否允许清空部门
+                return false; // 根据业务逻辑决定是否允许清空部门
             }
             employeeInf.setDepartment(dept);
         } else if (employeeInf.getDepartment() != null && employeeInf.getDepartment().getDeptId() != null) {
@@ -140,7 +138,7 @@ public class EmployeeInfService implements EmployeeInfServicelmpl {
             JobInf job = jobInfMapper.findById(employeeInf.getEmpJobIdInput());
             if (job == null) {
                 logger.warn("Job not found for ID: {} during update", employeeInf.getEmpJobIdInput());
-                return false; // 或者根据业务逻辑决定是否允许清空岗位
+                return false; // 根据业务逻辑决定是否允许清空岗位
             }
             employeeInf.setJob(job);
         } else if (employeeInf.getJob() != null && employeeInf.getJob().getJobId() != null) {

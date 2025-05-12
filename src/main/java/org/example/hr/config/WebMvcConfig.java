@@ -38,10 +38,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        // 全局日期格式化，主要影响从请求参数到Date类型的绑定（如果参数没有@DateTimeFormat）
-        // 以及Model中Date类型到字符串的默认格式化（如果Thymeleaf没有用#dates.format指定）
+        // 全局日期格式化，主要影响从请求参数到Date类型的绑定
+        // 以及Model中Date类型到字符串的默认格式化
         DateFormatter dateFormatter = new DateFormatter("yyyy-MM-dd");
-        // dateFormatter.setLenient(true); // 设置是否宽松解析
         registry.addFormatter(dateFormatter);
         logger.info("Global DateFormatter for 'yyyy-MM-dd' registered.");
     }
@@ -54,13 +53,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 示例：将 /my-custom-static/** 映射到 classpath:/custom-static/
-        // registry.addResourceHandler("/my-custom-static/**")
-        //         .addResourceLocations("classpath:/custom-static/");
-        // logger.info("Custom static resource handler registered for /my-custom-static/**.");
-
-        // Spring Boot 默认的静态资源处理已经很好了，这里可以不加。
-        // 如果加了，要确保不要覆盖掉默认的，或者明确配置所有需要的。
     }
 
     /**

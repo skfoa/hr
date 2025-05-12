@@ -107,7 +107,6 @@ public class JobInfService implements JobInfServicelmpl {
             logger.warn("Attempted to delete job with null ID.");
             return false;
         }
-        // 实际项目中，这里应该检查该岗位下是否有员工
         JobInf jobToDelete = jobInfMapper.findById(jobId);
         if (jobToDelete == null) {
             logger.warn("Attempted to delete non-existent job with ID: {}", jobId);

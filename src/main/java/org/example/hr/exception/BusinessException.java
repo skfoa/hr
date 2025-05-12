@@ -8,9 +8,6 @@ public class BusinessException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    // 可以添加错误码等属性
-    // private Integer code;
-
     public BusinessException() {
         super();
     }
@@ -27,12 +24,4 @@ public class BusinessException extends RuntimeException {
         super(cause);
     }
 
-    // 如果添加了错误码，可以提供相应的构造函数和getter
-    // public BusinessException(Integer code, String message) {
-    //     super(message);
-    //     this.code = code;
-    // }
-    // public Integer getCode() {
-    //     return code;
-    // }
 }

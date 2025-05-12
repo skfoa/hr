@@ -19,10 +19,6 @@ public class EmployeeInf {
      */
     private Integer empId;
 
-    // 外键ID，在POJO中通常用对象引用代替，但如果需要直接操作ID也可以保留
-    // private Integer empDeptId;
-    // private Integer empJobId;
-
     /**
      * 员工姓名 (非空)
      * 对应数据库字段: emp_name
@@ -138,8 +134,6 @@ public class EmployeeInf {
      */
     private JobInf job;
 
-    // 如果在表单提交或某些场景下需要单独传递部门和岗位的ID，可以添加这两个字段
-    // 但在Service层和Mapper层，我们主要通过 department.deptId 和 job.jobId 来获取
     private Integer empDeptIdInput; // 用于表单提交部门ID
     private Integer empJobIdInput;  // 用于表单提交岗位ID
 

@@ -39,7 +39,7 @@ public class EmployeeInfMapperTests {
     @Transactional // 确保 setup 内的操作如果失败或测试需要回滚时能正确处理
     void setUp() {
         // 准备测试用的部门和岗位数据 (确保它们存在于数据库中，或者在此处插入并获取ID)
-        // 为简单起见，我们假设ID为1的部门和岗位已存在 (从你的SQL脚本看是存在的)
+        // 为简单起见，我们假设ID为1的部门和岗位已存在
         // 更健壮的测试会先清理并插入测试数据
         testDept = deptInfMapper.findById(1); // 假设技术部ID为1
         if (testDept == null) {

@@ -47,15 +47,7 @@ body {
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: bold;
-    /* 如果LOGO在导航栏，这里可以添加 display: flex; align-items: center; */
 }
-
-/* 如果LOGO在导航栏，可以取消注释并调整这里的样式
-.navbar-logo {
-    height: 40px;
-    margin-right: 10px;
-}
-*/
 
 .navbar-nav {
     list-style: none;
@@ -80,7 +72,6 @@ body {
     background-color: #555;
     border-radius: 4px;
 }
-
 
 /* 内容区域包裹器 */
 .content-wrapper {
@@ -313,10 +304,9 @@ textarea.form-control {
     color: #fff;
     text-align: center;
     padding: 1rem 0;
-    /* margin-top: auto; */ /* 如果内容不足，这个会将页脚推到底部，但由于body是flex布局，通常不需要 */
 }
 
-/* --- 新增：首页 LOGO 和标题居中区域样式 --- */
+/* --- 首页 LOGO 和标题居中区域样式 --- */
 .hero-section {
     text-align: center; /* 内部元素水平居中 */
     padding: 10px 0;    /* 上下留白，可以根据需要调整 */
@@ -328,9 +318,7 @@ textarea.form-control {
     margin-left: auto;
     margin-right: auto;
     max-height: 180px;
-    /* 如果你的图片本身就是正方形或你希望它保持原始比例，可以只设置max-height或max-width */
-    /* 例如: max-width: 300px; height: auto; */
-    margin-bottom: 5px; /* LOGO 和下方标题的间距 */
+    margin-bottom: 5px;
 }
 
 .hero-title {
@@ -344,21 +332,19 @@ textarea.form-control {
 /* 欢迎内容区域的样式  */
 .welcome-content {
     text-align: center;
-    /* margin-top: 20px; /* 如果hero-section已有margin-bottom，这里可能不需要 */
 }
 .welcome-content h2 {
-    margin-top: 5px; /* 或者 0px，或者你期望的任何值 */
-    /* margin-bottom: 10px; /* 这是全局h2的下边距，可以保持或按需调整 */
+    margin-top: 5px;
 }
 
 /* 确保搜索表单的样式  */
 .search-form .form-label {
-    font-size: 0.9rem; /* 搜索表单标签小一点 */
+    font-size: 0.9rem;
     margin-bottom: 0.25rem;
 }
 .search-form .form-control-sm,
 .search-form .form-select-sm {
-    font-size: 0.9rem; /* 搜索表单输入框小一点 */
+    font-size: 0.9rem;
 }
 .search-form .row > div { /* 确保列在小屏幕上也能良好对齐 */
     margin-bottom: 0.5rem; /* 给每个搜索条件之间一点垂直间距 */

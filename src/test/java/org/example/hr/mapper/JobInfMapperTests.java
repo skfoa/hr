@@ -24,8 +24,6 @@ public class JobInfMapperTests {
     private JobInf job1, job2;
 
     @BeforeEach
-        // @Transactional // setUp 默认不需要事务回滚，除非你在里面写了会持久化的数据
-        // @Rollback(false)
     void setUp() {
         // 清理测试数据可以放在这里，或者依赖每个测试方法的 @Transactional 回滚
         job1 = new JobInf(null, "测试岗位1", "这是第一个测试岗位");

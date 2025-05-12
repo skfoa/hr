@@ -29,7 +29,6 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         model.addAttribute("errorMessage", "业务操作失败：" + ex.getMessage());
         model.addAttribute("url", req.getRequestURL());
-        // model.addAttribute("exception", ex); // 开发模式下可以传递整个异常对象
         mav.setViewName("error"); // 指向 templates/error.html
         return mav;
     }
@@ -51,21 +50,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", "系统发生了一个意外错误，请联系管理员。");
         model.addAttribute("detailMessage", "错误类型: " + ex.getClass().getSimpleName()); // 可以选择性显示
         model.addAttribute("url", req.getRequestURL());
-        // model.addAttribute("exception", ex); // 开发模式下可以传递整个异常对象，生产环境应避免
         mav.setViewName("error"); // 指向 templates/error.html
         return mav;
     }
-
-    // 根据需要添加更多针对特定异常类型的 @ExceptionHandler 方法
-    // 例如：
-    // @ExceptionHandler(NoHandlerFoundException.class)
-    // @ResponseStatus(HttpStatus.NOT_FOUND)
-    // public ModelAndView handleNotFoundException(HttpServletRequest req, NoHandlerFoundException ex, Model model) {
-    //     logger.warn("404 Not Found:: URL={}", req.getRequestURL());
-    //     model.addAttribute("errorMessage", "您访问的页面不存在 (404)。");
-    //     model.addAttribute("url", req.getRequestURL());
-    //     ModelAndView mav = new ModelAndView();
-    //     mav.setViewName("error");
-    //     return mav;
-    // }
 }

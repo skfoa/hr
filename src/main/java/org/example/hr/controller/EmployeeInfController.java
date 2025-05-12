@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-
 @Controller
 @RequestMapping("/employees")
 public class EmployeeInfController {
@@ -91,7 +90,6 @@ public class EmployeeInfController {
         return "employees/employee-list";
     }
 
-
     /**
      * 显示添加员工的表单页面
      */
@@ -150,12 +148,6 @@ public class EmployeeInfController {
             redirectAttributes.addFlashAttribute("successMessage", "员工 '" + employeeInf.getEmpName() + "' 添加成功！");
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "添加员工 '" + employeeInf.getEmpName() + "' 失败。请检查输入信息。");
-            // 理想情况下，应返回表单并显示具体错误
-            // model.addAttribute("employee", employeeInf); // 返回已填数据
-            // loadFormDependencies(model);
-            // model.addAttribute("pageTitle", "添加新员工");
-            // model.addAttribute("isEdit", false);
-            // return "employees/employee-form";
         }
         return "redirect:/employees/list";
     }
