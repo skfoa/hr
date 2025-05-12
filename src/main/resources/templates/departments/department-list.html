@@ -18,14 +18,10 @@
             <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
             <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
-            <!-- 搜索表单 (如果在这个页面有的话，从之前的 employee-list.html 复制过来并调整) -->
-            <!-- <form th:action="@{/departments/list}" method="get" class="mb-3 search-form"> ... </form> -->
-
             <div class="action-buttons-bar mb-3"> <!-- 统一操作按钮的容器 -->
                 <a th:href="@{/departments/add}" class="btn btn-primary">添加新部门</a>
                 <a th:href="@{/}" class="btn btn-info ms-2">返回首页</a> <!-- 添加返回首页按钮 -->
             </div>
-
 
             <table class="table table-striped table-bordered table-hover"> <!-- 添加了 table-hover -->
                 <thead class="table-dark">
@@ -56,13 +52,10 @@
         </div>
     </div>
 </div> <!-- main-container 结束 -->
-
 <!-- 3. 引入页脚 -->
 <div th:replace="~{common/_footer :: common_footer}"></div>
-
 <!-- 将 JavaScript 直接添加到页面底部 -->
 <script th:inline="javascript">
-    /*<![CDATA[*/
     document.addEventListener('DOMContentLoaded', function() {
         const deleteDeptLinks = document.querySelectorAll('a.delete-dept-link');
         deleteDeptLinks.forEach(link => {
@@ -74,7 +67,6 @@
             });
         });
     });
-    /*]]>*/
 </script>
 </body>
 </html>

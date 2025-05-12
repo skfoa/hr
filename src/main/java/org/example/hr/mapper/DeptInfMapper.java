@@ -4,7 +4,6 @@ import org.apache.ibatis.annotations.Select; // 用于注解SQL
 import org.example.hr.pojo.DeptInf;
 import java.util.List;
 
-// @Mapper // 如果主启动类没有 @MapperScan，则每个 Mapper 接口需要此注解
 // 在 HrApplication.java 中已经配置了 @MapperScan("org.example.hr.mapper")，所以这里不需要 @Mapper
 public interface DeptInfMapper {
 

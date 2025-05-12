@@ -3,55 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.hr.mapper.DeptInfMapper">
-
-    <!--
-        由于在 application.properties 中配置了:
-        mybatis.type-aliases-package=org.example.hr.pojo
-        mybatis.configuration.map-underscore-to-camel-case=true
-        所以:
-        1. resultType 可以直接使用类名 "DeptInf" 代替全限定名 "org.example.hr.pojo.DeptInf"。
-        2. 数据库的下划线列名 (如 dept_id) 会自动映射到Java对象的驼峰属性名 (如 deptId)。
-    -->
-
     <select id="findAll" resultType="DeptInf">
         SELECT dept_id, dept_name, dept_remark
         FROM dept_inf
         ORDER BY dept_id ASC
     </select>
-
     <select id="findById" parameterType="java.lang.Integer" resultType="DeptInf">
         SELECT dept_id, dept_name, dept_remark
         FROM dept_inf
         WHERE dept_id = #{deptId}
     </select>
-
-    <!-- findByName 方法已在 Mapper 接口中使用注解实现，此处无需重复定义 -->
-    <!-- 如果也想在XML中定义，可以这样做，但接口中的注解会优先（除非移除注解） -->
-    <!--
-    <select id="findByName" parameterType="java.lang.String" resultType="DeptInf">
-        SELECT dept_id, dept_name, dept_remark
-        FROM dept_inf
-        WHERE dept_name = #{deptName}
-    </select>
-    -->
-
-    <!--
-        useGeneratedKeys="true" 表示数据库会生成主键。
-        keyProperty="deptId" 表示将生成的主键值设置回传入的 deptInf 对象的 deptId 属性。
-        keyColumn="dept_id" （可选）如果主键列名与属性名不一致（在开启驼峰转换后通常一致），则需要指定。
-    -->
     <insert id="insert" parameterType="DeptInf" useGeneratedKeys="true" keyProperty="deptId">
         INSERT INTO dept_inf (dept_name, dept_remark)
         VALUES (#{deptName}, #{deptRemark})
     </insert>
-
     <update id="update" parameterType="DeptInf">
         UPDATE dept_inf
         SET dept_name = #{deptName},
             dept_remark = #{deptRemark}
         WHERE dept_id = #{deptId}
     </update>
-
     <delete id="deleteById" parameterType="java.lang.Integer">
         DELETE FROM dept_inf
         WHERE dept_id = #{deptId}

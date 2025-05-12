@@ -90,11 +90,7 @@ public class DeptInfController {
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "部门 '" + deptInf.getDeptName() + "' 添加成功！");
         } else {
-            // 实际项目中，这里应该返回到表单页并显示具体的错误信息，而不是简单地重定向
-            // 例如，如果名称重复，Service层应能返回更具体的错误原因
             redirectAttributes.addFlashAttribute("errorMessage", "添加部门 '" + deptInf.getDeptName() + "' 失败，可能名称已存在或输入无效。");
-            // 为了保持简单，我们先重定向到列表。更好的做法是返回到表单并填充已输入数据。
-            // return "redirect:/departments/add"; // 或者返回表单页并显示错误
         }
         return "redirect:/departments/list";
     }
@@ -141,7 +137,6 @@ public class DeptInfController {
         if (success) {
             redirectAttributes.addFlashAttribute("successMessage", "部门 '" + deptToDelete.getDeptName() + "' 删除成功！");
         } else {
-            // 实际项目中，Service层应能区分是“部门不存在”还是“因外键约束无法删除”等
             redirectAttributes.addFlashAttribute("errorMessage", "删除部门 '" + deptToDelete.getDeptName() + "' 失败。可能该部门下仍有员工，或部门不存在。");
         }
         return "redirect:/departments/list";

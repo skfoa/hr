@@ -16,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest // 专注于 MyBatis 组件的测试，它会配置一个内存数据库(默认H2)或使用现有数据源
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 重要：禁用内存数据库替换，使用application.properties中配置的真实数据库
-// @Transactional // 可以加在类级别，让所有测试方法都在事务中运行并默认回滚
-// @Rollback(true) // 默认就是true，测试完成后回滚数据库操作，保持数据库清洁
+
 public class DeptInfMapperTests {
 
     @Autowired
@@ -31,10 +30,6 @@ public class DeptInfMapperTests {
     void setUp() {
         // 清理可能存在的测试数据，避免测试间干扰 (更健壮的做法是使用数据库清理工具或脚本)
         // 为简单起见，这里假设测试前数据库是相对干净的，或者依赖测试的回滚
-        // deptInfMapper.deleteByName("测试部门1"); // 这种方式可能不安全，如果名称不存在
-        // deptInfMapper.deleteByName("测试部门2");
-        // deptInfMapper.deleteByName("注解测试部门");
-
         dept1 = new DeptInf(null, "测试部门1", "这是第一个测试部门");
         dept2 = new DeptInf(null, "测试部门2", "这是第二个测试部门，用于更新和删除");
     }
@@ -61,7 +56,6 @@ public class DeptInfMapperTests {
         List<DeptInf> depts = deptInfMapper.findAll();
         assertNotNull(depts, "部门列表不应为null");
         // 注意：由于测试可能并行或数据库中已有数据，这里不好精确断言数量
-        // 更好的做法是先查询总数，插入后再查询总数，比较差值
         assertTrue(depts.size() >= 2, "部门列表至少应包含刚插入的两个部门");
     }
 
@@ -117,10 +111,8 @@ public class DeptInfMapperTests {
         // 第一次插入
         deptInfMapper.insert(dept1);
         assertTrue(dept1.getDeptId() > 0);
-
         // 尝试插入同名部门
         DeptInf duplicateDept = new DeptInf(null, dept1.getDeptName(), "尝试插入同名部门");
-
         // 数据库层面有唯一约束 dept_name UNIQUE KEY `dept_name` (`dept_name`)
         // 所以这里会抛出异常
         assertThrows(DataIntegrityViolationException.class, () -> {
